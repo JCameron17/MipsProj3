@@ -17,3 +17,11 @@
     invalidMessage:
       li $v0, 4
       la $t0, invalid   #load message to print for invalid input
+
+    Accepted:
+      li $v0, 1         #print integer
+      jr $ra
+
+    notAccepted:
+      li $v0, 0
+      jr $ra
