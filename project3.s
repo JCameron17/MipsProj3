@@ -8,3 +8,8 @@
     la $a0, myString  #ask for user input
     li $a1, 1001      #allocate space for input
     syscall
+
+    #get input ready to split substrings and calculate decimal 
+    la $s2, myString  #move string to $s2 register
+    li $s0, 0
+    li $s1, 0
