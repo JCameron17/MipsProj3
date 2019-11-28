@@ -21,6 +21,13 @@
     loadSubstrings:
       la $s0, ($s1)   #substrings
 
+    newSub:
+      add $t4, $s2, $s1 	     #increment through string
+      lb $t3, 0($t4) 		       #get character
+      beq $t3, 0, handleInput  #leave newSub if null
+      beq $t3, 10, handleInput #leave newSub if newline
+      beq $t3, 44, handleInput #leave newSub if comma 
+
       handleInput:
       la $a0, ($s0)
       la $a1, ($s1)
