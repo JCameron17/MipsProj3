@@ -8,6 +8,7 @@
 
 .text
   main:
+    addi $s9, $zero, 31
     li $v0, 8
     la $a0, myString  #ask for user input
     li $a1, 1001      #allocate space for input
@@ -80,6 +81,10 @@
       beq $t0, $t1, invalidMessage  #empty string prompts invalid message
       li $t6, 0 				            #end of spaces
       li $s4, 0 				            #amount of chars
+
+    multVal:
+      mult $t6, $t6, $s9
+
 
     #call nested subroutines
     callNested:
