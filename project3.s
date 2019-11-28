@@ -8,7 +8,7 @@
 
 .text
   main:
-    addi $s9, $zero, 31
+    addi $t9, $zero, 31
     li $v0, 8
     la $a0, myString  #ask for user input
     li $a1, 1001      #allocate space for input
@@ -92,7 +92,7 @@
       j invalidMessage
 
     multVal:
-      mult $t6, $t6, $s9            #multiply by base
+      mul $t6, $t6, $t9            #multiply by base
       sub $t5, $t7, $v1             #subtract based on value stored in decideLoop
       add $t6, $t6, $t5             #add decimal value to base
       addi $s4, $s4, 1              #increment
@@ -102,7 +102,7 @@
     over:
       bgt $s4, 4, invalidMessage	#do not accept strings over 4 chars
       li $v0, 1
-      j exit
+      j finally
 
     #call nested subroutines
     callNested:
@@ -114,10 +114,13 @@
     invalidMessage:
       li $v0, 0
       la $t0, invalid   #load message to print for invalid input
+      j finally
 
     finally:
       addi $sp, $sp, -4   #save value to stack
       sw $t6, ($sp)
+      addi $sp, $sp, -4   #save value to stack
+      sw $v0, ($sp)
       la $ra, ($s3)
       jr $ra
 
