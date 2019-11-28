@@ -26,6 +26,8 @@
       la $a1, ($s1)
       jal takeInput
       jal callNested
+      syscall
+      j loadSubstrings
 
     takeInput:
       la $s3, ($ra)	      #jump to address in $ra when subprogram finishes
