@@ -17,6 +17,13 @@
     loadSubstrings:
       la $s0, ($s1)   #substrings
 
+    takeInput:
+      la $s3, ($ra)	      #jump to address in $ra when subprogram finishes
+      la $t0, ($a0)	      #load value from $a0 to $t0
+      addi $t1, $a1, 0    #store end of user input string
+      la $t2, myString   #load beginning of user input string
+
+
 
     invalidMessage:
       li $v0, 4
