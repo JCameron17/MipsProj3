@@ -53,6 +53,10 @@
       addi $t1, $a1, 0    #store end of user input string
       la $t2, myString   #load beginning of user input string
 
+    removeLeading:
+      addi $t0, $t0, 1    #move forward in string
+      j removeLeading
+
     #call nested subroutines
     callNested:
   	   lw $t1, ($sp)
