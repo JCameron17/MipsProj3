@@ -148,7 +148,15 @@
     	   addi $sp, $sp, 4
     	   lw $t2, ($sp)
     	   beq $t1, 0, invalid2 #empty string is invalid
+         li $v0, 1
+     		 mflo $a0
+     		 beq $a0, 0, dontPrint #keep program from printing early
          syscall
+
+      dontPrint:
+      	mfhi $a0
+      	syscall
+      	j exit2
 
         invalid2:
    			li $v0, 4
