@@ -57,6 +57,11 @@
       addi $t0, $t0, 1    #move forward in string
       j removeLeading
 
+    stringStart: 
+      beq $t0, $t1, invalidMessage  #empty string prompts invalid message
+      li $t6, 0 				            #end of spaces
+      li $s4, 0 				            #amount of chars
+
     #call nested subroutines
     callNested:
   	   lw $t1, ($sp)
