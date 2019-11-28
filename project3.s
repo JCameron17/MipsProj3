@@ -14,6 +14,10 @@
     li $s0, 0
     li $s1, 0
 
+    loadSubstrings:
+      la $s0, ($s1)   #substrings
+
+
     invalidMessage:
       li $v0, 4
       la $t0, invalid   #load message to print for invalid input
