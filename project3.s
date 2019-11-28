@@ -90,6 +90,10 @@
       addi $t0, $t0, 1              #increment
       j multVal
 
+    over:
+      bgt $s4, 4, invalidMessage	#do not accept strings over 4 chars
+      li $v0, 1
+      j exit
 
     #call nested subroutines
     callNested:
@@ -99,7 +103,7 @@
   	   beq $t1, 0, invalidMessage #empty string is invalid
 
     invalidMessage:
-      li $v0, 4
+      li $v0, 0
       la $t0, invalid   #load message to print for invalid input
 
     decideLoop:
