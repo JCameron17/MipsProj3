@@ -82,6 +82,12 @@
       li $t6, 0 				            #end of spaces
       li $s4, 0 				            #amount of chars
 
+    preMult:
+    beq $t0, $t1, over    #if end address equals start address end loop
+    add $t5, $t2, $t0     
+    lb $t7, ($t5)
+    la $a0, ($t7)
+
     multVal:
       mult $t6, $t6, $s9            #multiply by base
       sub $t5, $t7, $v1             #subtract based on value stored in decideLoop
