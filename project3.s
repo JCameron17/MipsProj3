@@ -21,6 +21,12 @@
     loadSubstrings:
       la $s0, ($s1)   #substrings
 
+      handleInput:
+      la $a0, ($s0)
+      la $a1, ($s1)
+      jal takeInput
+      jal callNested
+
     takeInput:
       la $s3, ($ra)	      #jump to address in $ra when subprogram finishes
       la $t0, ($a0)	      #load value from $a0 to $t0
