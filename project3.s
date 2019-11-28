@@ -1,6 +1,10 @@
 .data
   myString: .space 10000
   invalid: .asciiz "NaN"
+  val1: .word 1     #31^0
+  val2: .word 31    #31^1
+  val3: .word 961   #31^2
+  val4: .word 29791 #31^3
 
 .text
   main:
@@ -23,12 +27,12 @@
       addi $t1, $a1, 0    #store end of user input string
       la $t2, myString   #load beginning of user input string
 
-      #call nested subroutines
-      callNested:
-  	   		lw $t1, ($sp)
-  	   		addi $sp, $sp, 4
-  	   		lw $t2, ($sp)
-  	   		beq $t1, 0, invalidMessage #empty string is invalid
+    #call nested subroutines
+    callNested:
+  	   lw $t1, ($sp)
+  	   addi $sp, $sp, 4
+  	   lw $t2, ($sp)
+  	   beq $t1, 0, invalidMessage #empty string is invalid
 
     invalidMessage:
       li $v0, 4
@@ -51,6 +55,6 @@
       li $v0, 0
       jr $ra
 
-    exit: 
+    exit:
       li $v0, 10
       syscall
