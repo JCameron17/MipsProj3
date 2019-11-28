@@ -64,6 +64,17 @@
       addi $t0, $t0, 1            #move forward in string
       j removeLeading
 
+    removeFollowing:
+      beq $t0, $t1, stringStart   #when to start processing string (no longer spaces)
+      add $t5, $t2, $t0
+      lb $t7, ($t6)
+      beq $t5, 32, removeL        #if space char, remove
+      beq $t5, 9, removeL         #if tab char, remove
+
+        removeF:
+        addi $t1, $t1, -1            #move forward in string
+        j removeFollowing
+
     stringStart:
       beq $t0, $t1, invalidMessage  #empty string prompts invalid message
       li $t6, 0 				            #end of spaces
