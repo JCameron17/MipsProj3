@@ -23,7 +23,12 @@
       addi $t1, $a1, 0    #store end of user input string
       la $t2, myString   #load beginning of user input string
 
-
+      #call nested subroutines
+      callNested:
+  	   		lw $t1, ($sp)
+  	   		addi $sp, $sp, 4
+  	   		lw $t2, ($sp)
+  	   		beq $t1, 0, invalidMessage #empty string is invalid
 
     invalidMessage:
       li $v0, 4
