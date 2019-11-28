@@ -32,21 +32,23 @@
       j newSub
 
       handleInput:
-      la $a0, ($s0)
-      la $a1, ($s1)
-      jal takeInput
-      jal callNested
-      syscall
-      j loadSubstrings
+        la $a0, ($s0)
+        la $a1, ($s1)
+        jal takeInput
+        jal callNested
+        beq $t3, 0, exit        #exit loops if null
+        beq $t3, 10, exit       #exit loops if newline
+        addi $s1, $s1, 1
 
-      beq $t3, 0, exit        #exit loops if null
-      beq $t3, 10, exit       #exit loops if newline
-      addi $s1, $s1, 1
+        li $v0, 11              #instruction to print character
+        li $a0, 44              #print comma
+        syscall
+        j loadSubstrings
 
-      li $v0, 11              #instruction to print character
-      li $a0, 44              #print comma
-      syscall
-      j loadSubstrings
+      exit:
+        li $v0, 10
+        syscall
+
 
     takeInput:
       la $s3, ($ra)	      #jump to address in $ra when subprogram finishes
@@ -60,6 +62,7 @@
       lb $t7, ($t5)
       beq $t5, 32, removeL        #if space char, remove
       beq $t5, 9, removeL         #if tab char, remove
+      j removeFollowing
 
       removeL:
       addi $t0, $t0, 1            #move forward in string
@@ -72,6 +75,7 @@
       lb $t7, ($t5)
       beq $t5, 32, removeF        #if space char, remove
       beq $t5, 9, removeF         #if tab char, remove
+      j stringStart
 
         removeF:
         addi $t1, $t1, -1            #move forward in string
@@ -104,17 +108,11 @@
       li $v0, 1
       j finally
 
-    #call nested subroutines
-    callNested:
-  	   lw $t1, ($sp)
-  	   addi $sp, $sp, 4
-  	   lw $t2, ($sp)
-  	   beq $t1, 0, invalidMessage #empty string is invalid
+      invalidMessage:
+        li $v0, 0
+        la $t0, invalid   #load message to print for invalid input
+        j finally
 
-    invalidMessage:
-      li $v0, 0
-      la $t0, invalid   #load message to print for invalid input
-      j finally
 
     finally:
       addi $sp, $sp, -4   #save value to stack
@@ -144,6 +142,18 @@
       li $v0, 0
       jr $ra
 
-    exit:
-      li $v0, 10
-      syscall
+      #call nested subroutines
+      callNested:
+    	   lw $t1, ($sp)
+    	   addi $sp, $sp, 4
+    	   lw $t2, ($sp)
+    	   beq $t1, 0, invalid2 #empty string is invalid
+         syscall
+
+        invalid2:
+   			li $v0, 4
+   			la $a0, ($t2)
+   			syscall
+
+    exit2:
+    jr $ra
