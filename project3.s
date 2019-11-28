@@ -22,6 +22,10 @@
       blt $a0, 48, notAccepted  #character with ascii value < 48 is not accepted
       blt $a0, 58, Accepted     #accept digits
       blt $a0, 65, notAccepted  #special characters not accepted
+    	blt $a0, 87, Accepted     #accept chars a-v
+      blt $a0, 97, notAccepted  #do not accept special characters
+      blt $a0, 119, Accepted     #accept characters a-v
+      bgt $a0, 118, notAccepted     #characters above V not accepted
 
     Accepted:
       li $v0, 1         #print integer
