@@ -83,10 +83,13 @@
       li $s4, 0 				            #amount of chars
 
     preMult:
-    beq $t0, $t1, over    #if end address equals start address end loop
-    add $t5, $t2, $t0     
-    lb $t7, ($t5)
-    la $a0, ($t7)
+      beq $t0, $t1, over    #if end address equals start address end loop
+      add $t5, $t2, $t0
+      lb $t7, ($t5)
+      la $a0, ($t7)
+      jal decideLoop
+      bne $v0, 0, multVal
+      j invalidMessage
 
     multVal:
       mult $t6, $t6, $s9            #multiply by base
@@ -94,7 +97,7 @@
       add $t6, $t6, $t5             #add decimal value to base
       addi $s4, $s4, 1              #increment
       addi $t0, $t0, 1              #increment
-      j multVal
+      j preMult
 
     over:
       bgt $s4, 4, invalidMessage	#do not accept strings over 4 chars
