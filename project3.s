@@ -38,6 +38,10 @@
       syscall
       j loadSubstrings
 
+      beq $t3, 0, exit        #exit loops if null
+      beq $t3, 10, exit       #exit loops if newline
+      addi $s1, $s1, 1 	
+
     takeInput:
       la $s3, ($ra)	      #jump to address in $ra when subprogram finishes
       la $t0, ($a0)	      #load value from $a0 to $t0
