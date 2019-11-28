@@ -50,3 +50,7 @@
     notAccepted:
       li $v0, 0
       jr $ra
+
+    exit: 
+      li $v0, 10
+      syscall
