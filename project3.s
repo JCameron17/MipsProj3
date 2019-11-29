@@ -60,8 +60,8 @@
       beq $t0, $t1, stringStart   #when to start processing string (no longer spaces)
       add $t5, $t2, $t0
       lb $t7, ($t5)
-      beq $t5, 32, removeL        #if space char, remove
-      beq $t5, 9, removeL         #if tab char, remove
+      beq $t7, 32, removeL        #if space char, remove
+      beq $t7, 9, removeL         #if tab char, remove
       j removeFollowing
 
       removeL:
@@ -70,11 +70,11 @@
 
     removeFollowing:
       beq $t0, $t1, stringStart   #when to start processing string (no longer spaces)
-      add $t5, $t2, $t0
+      add $t5, $t2, $t1
       addi $t5, $t5, -1
       lb $t7, ($t5)
-      beq $t5, 32, removeF        #if space char, remove
-      beq $t5, 9, removeF         #if tab char, remove
+      beq $t7, 32, removeF        #if space char, remove
+      beq $t7, 9, removeF         #if tab char, remove
       j stringStart
 
         removeF:
@@ -104,14 +104,19 @@
       j preMult
 
     over:
-      bgt $s4, 4, invalidMessage	#do not accept strings over 4 chars
+      bgt $s4, 4, invalid1	#do not accept strings over 4 chars
       li $v0, 1
       j finally
 
+      invalid1:
+        li $v0, 0
+        la $t6, invalid
+        j finally
+
+
       invalidMessage:
         li $v0, 0
-        la $t0, invalid   #load message to print for invalid input
-        j finally
+        la $t6, invalid   #load message to print for invalid input
 
 
     finally:
@@ -149,7 +154,7 @@
     	   lw $t2, ($sp)
     	   beq $t1, 0, invalid2 #empty string is invalid
          li $t5, 10
-         divu $t2, $t5        #divide to prevent stack overflow 
+         divu $t2, $t5        #divide to prevent stack overflow
          li $v0, 1
      		 mflo $a0
      		 beq $a0, 0, dontPrint #keep program from printing early
@@ -158,12 +163,12 @@
       dontPrint:
       	mfhi $a0
       	syscall
-      	j exit2
+      	j return
 
         invalid2:
    			li $v0, 4
    			la $a0, ($t2)
    			syscall
 
-    exit2:
+    return:
     jr $ra
